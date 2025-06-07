@@ -5,7 +5,7 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 const router = express.Router()
 
-//Cadastro
+//Cadastro Feito
 router.post('/cadastro', async (req, res) => {
     try{
     const user = req.body
