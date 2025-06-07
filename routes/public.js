@@ -26,6 +26,27 @@ router.post('/cadastro', async (req, res) => {
     }
 })
 
+//Login
+
+router.post('/login', async (res, res) => {
+
+    try{    
+    const userInfo = req.body
+
+
+    const user = await prisma.user.findUniqu({     
+        where: {email: userInfo.email},
+        })
+
+        if(!user){
+            return res.status(404)
+        }
+    } catch(err){
+        res.status(500).json({message: "Erro no servidor"})
+    }
+    
+})
+
 
 
 export default router
