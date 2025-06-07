@@ -28,19 +28,26 @@ router.post('/cadastro', async (req, res) => {
 
 //Login
 
-router.post('/login', async (res, res) => {
-
-    try{    
+router.post('/login', async (req, res) => {
+    try {    
     const userInfo = req.body
 
 
-    const user = await prisma.user.findUniqu({     
-        where: {email: userInfo.email},
+    const user = await prisma.user.findUnique({     
+        where: { email: userInfo.email },
         })
 
         if(!user){
-            return res.status(404)
+            return res.status(404).json({message: 'Usuário não encontrado'})
         }
+
+        const isMatch = await bcrypt.compare(userInfo.password, user.Password)
+
+        if(!isMatch){
+            return res.status(400).json({message: 'Senha inválida'})
+        }
+
+        res.status(200).json(user)
     } catch(err){
         res.status(500).json({message: "Erro no servidor"})
     }
